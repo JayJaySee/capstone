@@ -1,0 +1,136 @@
+````
+
+contest_standings11_28 <-read_csv("2017-11-28/$8.00entry_NBA $450K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings11_29 <- read_csv("2017-11-29/$8.88entry_NBA $600K Mini Backboard Breaker [$100K to 1st!]/contest-standings.csv")
+contest_standings11_30 <- read_csv("2017-11-30/$0.25entry_NBA $10K Quarter Jukebox [Just $0.25!]/contest-standings.csv")
+contest_standings12_01 <- read_csv("2017-12-01/$8.00entry_NBA $475K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_02 <- read_csv("2017-12-02/$8.00entry_NBA $350K Excellent 8s [$50K to 1st]/contest-standings.csv")
+contest_standings12_04 <- read_csv("2017-12-04/$8.00entry_NBA $425K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_05 <- read_csv("2017-12-05/$8.00entry_NBA $450K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_06 <- read_csv("2017-12-06/$0.25entry_NBA $10K Quarter Jukebox [Just $0.25!]/contest-standings.csv")
+contest_standings12_12<- read_csv("2017-12-12/$0.25entry_NBA $10K Quarter Jukebox [Just $0.25!]/contest-standings.csv")
+contest_standings12_13<- read_csv("2017-12-13/$8.00entry_NBA $425K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_14 <- read_csv("2017-12-14/$8.00entry_NBA $450K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_16 <- read_csv("2017-12-16/$8.00entry_NBA $350K Excellent 8s [$50K to 1st]/contest-standings.csv")
+contest_standings12_19 <- read_csv("2017-12-19/$8.00entry_NBA $425K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings12_20 <- read_csv("2017-12-20/$0.25entry_NBA $10K Quarter Jukebox [Just $0.25!]/contest-standings.csv")
+contest_standings12_22 <- read_csv("2017-12-22/$8.00entry_NBA $350K Excellent 8s [$50K to 1st]/contest-standings.csv")
+contest_standings12_23 <- read_csv("2017-12-23/$8.00entry_NBA $300K Excellent 8ÔÇÖs [$50K to 1st]/contest-standings.csv")
+contest_standings12_25 <- read_csv("2017-12-25/$8.00entry_NBA $700K Holiday Classic [$100K to 1st!]/contest-standings.csv")
+contest_standings12_26 <- read_csv("2017-12-26/$8.00entry_NBA $1M Big FREEZE [$150K to 1st]/contest-standings.csv")
+contest_standings12_28 <- read_csv("2017-12-28/$8.00entry_NBA $425K Excellent 8ÔÇÖs [$50K to 1st!]/contest-standings.csv")
+contest_standings11_28<-contest_standings11_28[,8:11]
+contest_standings11_29<-contest_standings11_29[,8:11]
+contest_standings11_30<-contest_standings11_30[,8:11]
+contest_standings12_01<-contest_standings12_01[,8:11]
+contest_standings12_02<-contest_standings12_02[,8:11]
+contest_standings12_04<-contest_standings12_04[,8:11]
+contest_standings12_05<-contest_standings12_05[,8:11]
+contest_standings12_06<-contest_standings12_06[,8:11]
+contest_standings12_12<-contest_standings12_12[,8:11]
+contest_standings12_13<-contest_standings12_13[,8:11]
+contest_standings12_14<-contest_standings12_14[,8:11]
+contest_standings12_16<-contest_standings12_16[,8:11]
+contest_standings12_19<-contest_standings12_19[,8:11]
+contest_standings12_20<-contest_standings12_20[,8:11]
+contest_standings12_22<-contest_standings12_22[,8:11]
+contest_standings12_23<-contest_standings12_23[,8:11]
+contest_standings12_25<-contest_standings12_25[,8:11]
+contest_standings12_26<-contest_standings12_26[,8:11]
+contest_standings12_28<-contest_standings12_28[,8:11]
+players_with_ownership11_28<-merge(final_player_results_11_28,contest_standings11_28,1)
+players_with_ownership11_29<-merge(final_player_results_11_29,contest_standings11_29,1)
+players_with_ownership11_30<-merge(final_player_results_11_30,contest_standings11_30,1)
+players_with_ownership12_01<-merge(final_player_results_12_01,contest_standings12_01,1)
+players_with_ownership12_02<-merge(final_player_results_12_02,contest_standings12_02,1)
+players_with_ownership12_04<-merge(final_player_results_12_04,contest_standings12_04,1)
+players_with_ownership12_05<-merge(final_player_results_12_05,contest_standings12_05,1)
+players_with_ownership12_06<-merge(final_player_results_12_06,contest_standings12_06,1)
+players_with_ownership12_12<-merge(final_player_results_12_12,contest_standings12_12,1)
+players_with_ownership12_13<-merge(final_player_results_12_13,contest_standings12_13,1)
+players_with_ownership12_14<-merge(final_player_results_12_14,contest_standings12_14,1)
+players_with_ownership12_16<-merge(final_player_results_12_16,contest_standings12_16,1)
+names(players_with_ownership12_16)<-names(players_with_ownership12_14)
+players_with_ownership12_19<-merge(final_player_results_12_19,contest_standings12_19,1)
+players_with_ownership12_20<-merge(final_player_results_12_20,contest_standings12_20,1)
+players_with_ownership12_22<-merge(final_player_results_12_22,contest_standings12_22,1)
+players_with_ownership12_23<-merge(final_player_results_12_23,contest_standings12_23,1)
+players_with_ownership12_25<-merge(final_player_results_12_25,contest_standings12_25,1)
+
+players_with_ownership_final<-rbind(players_with_ownership11_28,players_with_ownership11_29,players_with_ownership11_30,players_with_ownership12_01,players_with_ownership12_02,players_with_ownership12_04,players_with_ownership12_05,players_with_ownership12_06,players_with_ownership12_12,players_with_ownership12_13,players_with_ownership12_14,players_with_ownership12_16,players_with_ownership12_19,players_with_ownership12_20,players_with_ownership12_22,players_with_ownership12_23,players_with_ownership12_25)
+
+players_with_ownership_fina2l$X.Drafted<-gsub("%","",players_with_ownership_final2$X.Drafted)
+players_with_ownership_final2$`Opp DvP`<-gsub("%","",players_with_ownership_final2$`Opp DvP`)
+
+players_with_ownership_final2$X.Drafted<-as.numeric(players_with_ownership_final2$X.Drafted)
+players_with_ownership_final2$`Opp DvP`<-as.numeric(players_with_ownership_final2$`Opp DvP`)
+
+players_with_ownership_final2<-players_with_ownership_final[,-c(16,17,18,27,28,29,30,33,48,49,50,51,52,53,54,56)]
+players_with_ownership_final2<- rename(players_with_ownership_final2, Pos = Pos.x)
+players_with_ownership_final2<- rename(players_with_ownership_final2, Team = Team.x)
+players_with_ownership_final2<- rename(players_with_ownership_final2, Opp = Opp.x)
+players_with_ownership_final2<- rename(players_with_ownership_final2, Salary = Salary.x)
+players_with_ownership_final2<- rename(players_with_ownership_final2, USG = USG.x)
+players_with_ownership_final2<- rename(players_with_ownership_final2, Date = vector)
+players_with_ownership_final2<- rename(players_with_ownership_final2, Draft_Percentage = X.Drafted)
+
+players_with_ownership_final2<-separate(players_with_ownership_final2,Opp,c("Location", "Opp"), sep=" ")
+players_with_ownership_final2$Location<-ifelse(players_with_ownership_final2$Location =="@","Road","Home")
+
+players_with_ownership_final2$Location<-as.factor(players_with_ownership_final2$Location)
+players_with_ownership_final2$`Def v Pos`<-as.factor(players_with_ownership_final2$`Def v Pos`)
+players_with_ownership_final2<-players_with_ownership_final2[,-18]
+players_with_ownership_final2$Rest<-as.factor(players_with_ownership_final2$Rest)
+outwithinjuries<-which(players_with_ownership_final2$Inj=="O")
+players_with_ownership_final2<-players_with_ownership_final2[-outwithinjuries,]
+players_with_ownership_final2<-players_with_ownership_final2[,-23]
+players_with_ownership_final2$PS<-as.numeric(players_with_ownership_final2$PS)
+players_with_ownership_final2<-players_with_ownership_final2[,-22]
+
+players_with_ownership_final2<-players_with_ownership_final2[complete.cases(players_with_ownership_final2),]
+
+GPPViable<-ifelse(players_with_ownership_final2$Val >= 6, "Yes", "No")
+players_with_ownership_final2<-cbind(players_with_ownership_final2,GPPViable)
+library(lubridate)
+
+vectorofdifference<-players_with_ownership_final2$`L5 FP`- players_with_ownership_final2$`S FP`
+players_with_ownership_final2<-cbind(players_with_ownership_final2, vectorofdifference)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FPDifferenceL5=vectorofdifference)
+percentageofdifference<-(players_with_ownership_final2$FPDifferenceL5/players_with_ownership_final2$`S FP`)*100
+players_with_ownership_final2<-cbind(players_with_ownership_final2, percentageofdifference)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FPPercentageL5=percentageofdifference)
+players_with_ownership_final2$FPDifferenceL5<-scale(players_with_ownership_final2$FPDifferenceL5)
+
+vectorofdifference1<-players_with_ownership_final2$`L5 FGA`- players_with_ownership_final2$`S FGA`
+players_with_ownership_final2<-cbind(players_with_ownership_final2, vectorofdifference1)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FGADifferenceL5=vectorofdifference1)
+percentageofdifference1<-(players_with_ownership_final2$FGADifferenceL5/players_with_ownership_final2$`S FGA`)*100
+players_with_ownership_final2<-cbind(players_with_ownership_final2, percentageofdifference1)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FGAPercentageL5=percentageofdifference1)
+players_with_ownership_final2$FGADifferenceL5<-scale(players_with_ownership_final2$FGADifferenceL5)
+
+vectorofdifference2<-players_with_ownership_final2$`L2 FGA`- players_with_ownership_final2$`S FGA`
+players_with_ownership_final2<-cbind(players_with_ownership_final2, vectorofdifference2)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FGADifferenceL2=vectorofdifference2)
+percentageofdifference2<-(players_with_ownership_final2$FGADifferenceL2/players_with_ownership_final2$`S FGA`)*100
+players_with_ownership_final2<-cbind(players_with_ownership_final2, percentageofdifference2)
+players_with_ownership_final2<-rename(players_with_ownership_final2, FGAPercentageL2=percentageofdifference2)
+players_with_ownership_final2$FGADifferenceL2<-scale(players_with_ownership_final2$FGADifferenceL2)
+
+vectorofdifference3<-players_with_ownership_final2$`L5 Min`- players_with_ownership_final2$`S Min`
+players_with_ownership_final2<-cbind(players_with_ownership_final2, vectorofdifference3)
+players_with_ownership_final2<-rename(players_with_ownership_final2, MinDifferenceL5=vectorofdifference3)
+percentageofdifference3<-(players_with_ownership_final2$MinDifferenceL5/players_with_ownership_final2$`S Min`)*100
+players_with_ownership_final2<-cbind(players_with_ownership_final2, percentageofdifference3)
+players_with_ownership_final2<-rename(players_with_ownership_final2, MinPercentageL5=percentageofdifference3)
+players_with_ownership_final2$MinDifferenceL5<-scale(players_with_ownership_final2$MinDifferenceL5)
+
+vectorofdifference4<-players_with_ownership_final2$`L2 Min`- players_with_ownership_final2$`S Min`
+players_with_ownership_final2<-cbind(players_with_ownership_final2, vectorofdifference4)
+players_with_ownership_final2<-rename(players_with_ownership_final2, MinDifferenceL2=vectorofdifference4)
+percentageofdifference4<-(players_with_ownership_final2$MinDifferenceL2/players_with_ownership_final2$`S Min`)*100
+players_with_ownership_final2<-cbind(players_with_ownership_final2, percentageofdifference4)
+players_with_ownership_final2<-rename(players_with_ownership_final2, MinPercentageL2=percentageofdifference4)
+players_with_ownership_final2$MinDifferenceL2<-scale(players_with_ownership_final2$MinDifferenceL2)
+
+```
