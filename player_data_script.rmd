@@ -1,0 +1,29 @@
+---
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+```
+setwd("C:/Users/John/Desktop/Capstone Project")```
+
+library(readr)dfn_2017_11_29<-read_csv("projections/dailyfantasynerd/dfn_2017-11-29.csv")
+dfn_2017_12_25 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-25.csv")
+dfn_2017_12_23 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-23.csv")
+dfn_2017_12_22 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-22.csv")
+dfn_2017_12_20 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-20.csv")
+dfn_2017_12_19 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-19.csv")
+dfn_2017_12_16 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-16.csv")
+dfn_2017_12_14 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-14.csv")
+dfn_2017_12_13 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-13.csv")
+dfn_2017_12_12 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-12.csv")
+dfn_2017_12_06 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-06.csv")
+dfn_2017_12_05 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-05.csv")
+dfn_2017_12_04 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-04.csv")
+dfn_2017_12_02 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-02.csv")
+dfn_2017_12_01 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-01.csv")
+dfn_2017_11_30 <- read_csv("projections/dailyfantasynerd/dfn_2017-11-30.csv")
+dfn_2017_11_28 <- read_csv("projections/dailyfantasynerd/dfn_2017-11-28.csv")
+dfn_2017_11_27 <- read_csv("projections/dailyfantasynerd/dfn_2017-11-27.csv")
+
+```
