@@ -2,7 +2,9 @@
 title: "Capstone_Project_Scipt"
 author: "Justin Carver"
 date: "November 8, 2018"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +17,8 @@ setwd("C:/Users/John/Desktop/Capstone Project")
 
 ```{r}
 #Load Player Data
-library(readr)dfn_2017_11_29 <- read_csv("projections/dailyfantasynerd/dfn_2017-11-29.csv")
+library(readr)
+dfn_2017_11_29 <- read_csv("projections/dailyfantasynerd/dfn_2017-11-29.csv")
 dfn_2017_12_25 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-25.csv")
 dfn_2017_12_23 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-23.csv")
 dfn_2017_12_22 <- read_csv("projections/dailyfantasynerd/dfn_2017-12-22.csv")
@@ -96,7 +99,7 @@ player_results12_23<-cbind(player_results12_23,vector)
 player_results12_25<- read_csv("2017-12-25/player_results.csv")
 vector<-rep("12-25",nrow(player_results12_25))
 player_results12_25<-cbind(player_results12_25,vector)
-player_results<- rbind(player_results11_27,player_results11_28,player_results11_29,player_results11_30,player_results12_01,player_results12_02,player_results12_04,player_results12_05,player_results12_06, player_results12_12,player_results12_13,player_results12_14,player_results12_16,player_results12_19,player_results12_20,player_results12_22,player_results12_23,player_results12_25,player_results12_26)
+player_results<- rbind(player_results11_27,player_results11_28,player_results11_29,player_results11_30,player_results12_01,player_results12_02,player_results12_04,player_results12_05,player_results12_06, player_results12_12,player_results12_13,player_results12_14,player_results12_16,player_results12_19,player_results12_20,player_results12_22,player_results12_23,player_results12_25,player_results12_25)
 
 
 
@@ -202,6 +205,9 @@ players_with_ownership_final2$`Opp DvP`<-as.numeric(players_with_ownership_final
 
 players_with_ownership_final2<-players_with_ownership_final2[,-c(16,17,18,27,28,29,30,33,48,49,50,51,52,53,54,56)]
 
+library(dplyr)
+library(plyr)
+
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("Pos.x" = "Pos"))
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("Team.x" = "Team"))
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("Opp.x" = "Opp"))
@@ -209,6 +215,8 @@ players_with_ownership_final2<- rename(players_with_ownership_final2, c("Salary.
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("USG.x" = "USG"))
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("vector" = "Date" ))
 players_with_ownership_final2<- rename(players_with_ownership_final2, c("X.Drafted" = "Draft_Percentage"))
+
+library(tidyr)
 
 players_with_ownership_final2<-separate(players_with_ownership_final2,Opp,c("Location", "Opp"), sep=" ")
 players_with_ownership_final2$Location<-ifelse(players_with_ownership_final2$Location =="@","Road","Home")
@@ -236,6 +244,7 @@ players_with_ownership_final2<-cbind(players_with_ownership_final2,GPPViable)
 
 ```{r}
 #Dummy Variables
+library(psych)
 
 vectorofdifference<-players_with_ownership_final2$`L5 FP`- players_with_ownership_final2$`S FP`
 
@@ -310,10 +319,28 @@ players_with_ownership_final2<-rename(players_with_ownership_final2, c("percenta
 players_with_ownership_final2$MinDifferenceL2<-scale(players_with_ownership_final2$MinDifferenceL2)
 
 draftkingsdata<-players_with_ownership_final2[, -c(1,3,5,8,9,10,16,18,19,21,23,36,37)]
+
+draftkingsdata<-draftkingsdata[draftkingsdata$Draft_Percentage!=0,]
+
+summary(draftkingsdata)
+str(draftkingsdata)
+describe(draftkingsdata)
+
+library(ggplot2)
+
+
+
+ggplot(data=draftkingsdata, aes(GPPViable))+
+  geom_bar(aes(GPPViable), colour = "blue", fill= "red")
+
+ggplot(data=draftkingsdata, aes(x=Val))+
+  geom_histogram(aes(x=Val), binwidth = 0.5, fill="blue")
 ```
 
 ```{r}
 #Clustering
+
+library(dplyr)
 
 mydata<-model.matrix(~.,data=draftkingsdata)
 cluster_fit <- kmeans(mydata, 2)
@@ -323,7 +350,14 @@ mydata <- data.frame(mydata, cluster_fit$cluster)
 
 k.means.centers<-cluster_fit$centers
 View(k.means.centers)
+
+mydata.results<-table(mydata$GPPViableYes, cluster_fit$cluster)
+names(dimnames(mydata.results)) <- c("GPPViable", "Cluster")
+mydata.results
+
+
 cluster_fit$betweenss/cluster_fit$totss
+
 
 mydata.cluster1<-mydata[mydata$cluster_fit.cluster==1,]
 mydata.cluster2<-mydata[mydata$cluster_fit.cluster==2,]
@@ -339,24 +373,33 @@ plot(1:k.max, wss,
      xlab="Number of clusters K",
      ylab="Total within-clusters sum of squares")
 
-kmm = kmeans(mydata,5,nstart = 50,iter.max = 15)
+kmm = kmeans(mydata[,-77],5,nstart = 50,iter.max = 15)
+kmm.centers<-kmm$centers
+View(kmm.centers)
+
 
 kmm$betweenss/kmm$totss
 
 nums <- unlist(lapply(draftkingsdata, is.numeric))
+require(dplyr)
+
 
 numericdraftkingsdata<-draftkingsdata[,nums]
 
-nums <- unlist(lapply(train, is.numeric))
-numerictraindata<-train[,nums]
-numerictraindata<-numerictraindata[,-22]
+head(numericdraftkingsdata)
+
+#nums <- unlist(lapply(train, is.numeric))
+#numerictraindata<-train[,nums]
+#numerictraindata<-numerictraindata[,-22]
 
 Correlations<-cor(numericdraftkingsdata)
-View(cor(numerictraindata))
+head(cor(numericdraftkingsdata))
 ```
 
 ```{r}
 #Lasso Regression - Ownership
+library(caret)
+library(glmnet)
 set.seed(222)
 
 ind<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
@@ -366,6 +409,9 @@ test<- draftkingsdata[ind==2,]
 custom<- trainControl(method = "repeatedcv",
                       number =10,
                       repeats =10)
+
+train<-train[, -c(11,26)]
+test<-test[,-c(11,26)]
 
 lasso<- train(Draft_Percentage~.,
               train,
@@ -373,74 +419,105 @@ lasso<- train(Draft_Percentage~.,
               tuneGrid = expand.grid(alpha=1, lambda= seq(0.0001,.5,length=10)),
               trControl=custom)
 
-train<-train[, -c(11,26)]
+
 train<-model.matrix(~., data=train)
 
-test<-test[,-c(11,26)]
+
 test<-model.matrix(~., data=test)
 
-fit.model<-glmnet(x=train[,-64], y= train[ ,64], family = "gaussian", alpha = 1, lambda=.1111889)
+fit.model<-glmnet(x=train[,-64], y= train[ ,64], family = "gaussian", alpha = 1, lambda=lasso$bestTune$lambda)
+fit.model$beta
 
 predictions<-predict(fit.model, test[,-64])
 error<- predictions-test[,64]
 RMSE<-sqrt(mean(error^2))
+
+
+
+RMSE
 ```
 
 ```{r}
 #Lasso Logistic- GPP Viable
-
-draftkingsdata<-players_with_ownership_final2[, -c(1,3,5,8,9,10,16,18,19,21,23,36,37)]
+library(randomForest)
 
 set.seed(224)
 
-ind1<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
-train1<-draftkingsdata[ind1==1,]
-test1<- draftkingsdata[ind1==2,]
+draftkingsdatalogviable<-draftkingsdata[,-c(11,25)]
 
-train1$GPPViable<-as.numeric(train1$GPPViable)
-test1$GPPViable<-as.numeric(test1$GPPViable)
+draftkingsdatalogviable$Pos<-as.factor(draftkingsdatalogviable$Pos)
+ind1<-sample(2,nrow(draftkingsdatalogviable),replace = TRUE, prob = c(0.7,0.3))
+train1<-draftkingsdatalogviable[ind1==1,]
+test1<- draftkingsdatalogviable[ind1==2,]
+
+
 
 custom<- trainControl(method = "repeatedcv",
                       number =10,
                       repeats =10)
-train1<-train1[, -c(11,25)]
-train1<-model.matrix(~., data=train1)
 
-test1<-test1[,-c(11,25)]
-test1<-model.matrix(~., data=test1)
+train3<-model.matrix(~., data=train1)
 
-set.seed(0927)
-CV=cv.glmnet(x=train1[,-64],y=train1[,64], family="binomial", type.measure = "auc", alpha=1, nlambda=100)
+
+test3<-model.matrix(~., data=test1)
+
+CV=cv.glmnet(x=train3[,-64],y=train3[,64], family="binomial", type.measure = "auc", alpha=1, nlambda=100)
 
 plot(CV)
 
-predictions1<-predict(fit.model1, test1[,-64], type="response")
+fit.model1<-glmnet(x=train3[,-64], y= train3[ ,64], family = "gaussian", alpha = 1, lambda=CV$lambda.1se)
+fit.model1$beta
 
-fitted.results <- ifelse(predictions1 > 0.3,1,0)
+predictions1<-predict(fit.model1, test3[,-64], type="response")
 
-confusion.matrix<-table(test1[,64], fitted.results)
+fitted.results <- ifelse(predictions1 > 0.23,1,0)
+
+confusion.matrix<-table(test3[,64], fitted.results)
 TruePositiveRate<-confusion.matrix[2,2]/(confusion.matrix[1,2] + confusion.matrix[2,2])
 Recall<-confusion.matrix[2,2]/(confusion.matrix[2,1] + confusion.matrix[2,2])
+
+confusion.matrix
+TruePositiveRate
+Recall
+
+#Random Forest
+#evenoutclasses
+
+draftkingsdatalogviable.df<-randomForest(data=draftkingsforestdata, subset = train1, y=train1[,24], x= train1[,-24], xtest = test1[,-24], ytest = test1[,24], ntree = 500, sampsize = c(300,300))
+
+draftkingsdatalogviable.df$confusion
+
+TPP2<- draftkingsdatalogviable.df$confusion[2,2]/(draftkingsdatalogviable.df$confusion[2,2]+draftkingsdatalogviable.df$confusion[1,2])
+
+Recall2<-draftkingsdatalogviable.df$confusion[2,2]/(draftkingsdatalogviable.df$confusion[2,2]+draftkingsdatalogviable.df$confusion[2,1])
+
+TPP2
+Recall2
+
+
 ```
 
 ```{r}
 #Lasso Linear- Value
 
-set.seed(224)
+set.seed(228)
 
-ind1<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
-train2<-draftkingsdata[ind1==1,]
-test2<- draftkingsdata[ind1==2,]
+ind3<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
+train2<-draftkingsdata[ind3==1,]
+test2<- draftkingsdata[ind3==2,]
+
+train2<-train2[, -c(26,25)]
+test2<-test2[,-c(26,25)]
 
 custom<- trainControl(method = "repeatedcv",
                       number =10,
                       repeats =10)
 
 
-train2<-train2[, -c(26,25)]
+
 train2<-model.matrix(~., data=train2)
 
-test2<-test2[,-c(26,25)]
+
 test2<-model.matrix(~., data=test2)
 
 CV=cv.glmnet(x=train2[,-48],y=train2[,48], family="gaussian", alpha=1, nlambda=100)
@@ -448,44 +525,61 @@ CV=cv.glmnet(x=train2[,-48],y=train2[,48], family="gaussian", alpha=1, nlambda=1
 plot(CV)
 
 fit.model2<-glmnet(x=train2[,-48], y=(train2[ ,48]), family = "gaussian", alpha = 1, lambda=CV$lambda.1se)
+
+coef(fit.model2)
+
+fit.model2.predict<-predict(fit.model2, test2[,-48], type="link")
+error33<- fit.model2.predict-test2[,48]
+RMSE33<-sqrt(mean(error33^2))
+RMSE33
+
 ```
 
 ```{r}
 #Multivariate Regression - Ownership
-library(glmnet)
-library(caret)
-install.packages("mlbench")
-library(mlbench)
-install.packages("psych")
+#install.packages("mlbench", repos="http://cran.us.r-project.org")
+#library(mlbench)
+install.packages("psych", repos="http://cran.us.r-project.org")
 library(psych)
-
-draftkingsdata<-players_with_ownership_final2[, -c(1,3,5,8,9,10,16,18,19,21,23,36,37)]
-set.seed(222)
-
-
-ind<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
-train<-draftkingsdata[ind==1,]
-test<- draftkingsdata[ind==2,]
+library(MASS)
+library(caret)
+library(randomForest)
 
 
+set.seed(232)
 
-train<-train[, -c(11,26)]
+
+ind4<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
+train4<-draftkingsdata[ind==1,]
+test4<- draftkingsdata[ind==2,]
 
 
-test<-test[,-c(11,26)]
 
-nums <- unlist(lapply(train, is.numeric))
-numerictraindata<-train[,nums]
+train4<-train4[, -c(11,26)]
+
+
+test4<-test4[,-c(11,26)]
+
+nums <- unlist(lapply(train4, is.numeric))
+numerictraindata<-train4[,nums]
 numerictraindata<-numerictraindata[,-22]
 
 
-numerictestdata<-test[,nums]
+numerictestdata<-test4[,nums]
 numerictestdata<-numerictestdata[,-22]
 
 
+
 correlatedcols<-findCorrelation(cor(numerictraindata), cutoff = 0.85)
-trainlinear<-train[,-correlatedcols]
-testlinear<-test[, -correlatedcols]
+trainlinear<-train4[,-correlatedcols]
+testlinear<-test4[, -correlatedcols]
+
+nums <- unlist(lapply(draftkingsdata, is.numeric))
+draftkingsdatalinear<-draftkingsdata[,nums]
+draftkingsdatalinear<-draftkingsdatalinear[,-22]
+correlatedcols<-findCorrelation(cor(draftkingsdatalinear), cutoff = 0.85)
+draftkingsdatalinear<- draftkingsdatalinear[, -correlatedcols]
+
 
 fullmodel<- lm(Draft_Percentage~ ., data=trainlinear)
 stepmodel<- stepAIC( fullmodel, direction = "both", trace=0)
@@ -493,30 +587,105 @@ valueprediction<-predict(stepmodel, testlinear)
 AIC(stepmodel)
 error1<- valueprediction-testlinear[,14]
 RMSE1<-sqrt(mean(error1^2))
+RMSE1
+summary(stepmodel)
+plot(stepmodel)
+
+d1<-cooks.distance(fullmodel)
+r <- stdres(fullmodel)
+a<-cbind(trainlinear, d1, r)
+ppp<-a[d1<4/nrow(trainlinear),]
+ppp<-ppp[,-c(22:23)]
+
+
+fullmodelppp<- lm(Draft_Percentage~ ., data=ppp)
+stepmodelppp<- stepAIC( fullmodelppp, direction = "both", trace=0)
+valuepredictionppp<-predict(stepmodelppp, testlinear)
+AIC(stepmodelppp)
+errorppp<- valuepredictionppp-testlinear[,14]
+RMSEppp<-sqrt(mean(errorppp^2))
+summary(stepmodelppp)
+plot(stepmodelppp)
+
+#rlm
+
+
+#Random Forest
+
+ind<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
+train5<-draftkingsdatalinear[ind==1,]
+test5<- draftkingsdatalinear[ind==2,]
+
+
+
+train5<-train5[, -c(11,26)]
+
+
+test5<-test5[,-c(11,26)]
+
+
+
+draftkingsdatalinear$ownership<-ifelse(draftkingsdatalinear$Draft_Percentage<1, draftkingsdatalinear$ownership<-"0-.99%",
+                                       ifelse(draftkingsdatalinear$Draft_Percentage<5, draftkingsdatalinear$ownership<-"1-4.99%",
+                                        ifelse(draftkingsdatalinear$Draft_Percentage<10,draftkingsdatalinear$ownership<-"5-9.99%",
+                                        ifelse(draftkingsdatalinear$Draft_Percentage<20, draftkingsdatalinear$ownership<-"10-19.99%",
+                                        ifelse(draftkingsdatalinear$Draft_Percentage<100, draftkingsdatalinear$ownership<-"20%+",0
+                                             )       )         )      ))
+
+draftkingsdatalinear$ownership<-factor(draftkingsdatalinear$ownership, levels=(c("0-.99%", "1-4.99%", "5-9.99%", "10-19.99%", "20%+")))
+
+ggplot(data = draftkingsdatalinear, aes(x=ownership))+
+  geom_bar(aes(x=ownership), colour= "red")
+
+set.seed(5050)
+
+
+
+draftkingsforestdata<-draftkingsdatalinear[,-c(11,25,26)]
+
+
+ind21<-sample(2,nrow(draftkingsforestdata),replace = TRUE, prob = c(0.7,0.3))
+train21<-draftkingsforestdata[ind21==1,]
+test21<- draftkingsforestdata[ind21==2,]
+
+
+
+draftkingsdatalinear.df<-randomForest(data=draftkingsforestdata, subset = train21, y=train21[,17], x= train21[,-17], xtest = test21[,-17], ytest = test21[,17], ntree = 500, sampsize = c(90,90,90,90,90), importance = TRUE)
+
+draftkingsdatalinear.df
+
+varImp(draftkingsdatalinear.df)
+
+
+
 ```
 
 ```{r}
 #Naive Bayes Classification
 library(e1071)
-draftkingsdata<-players_with_ownership_final2[, -c(1,3,5,8,9,10,16,18,19,21,23,36,37)]
-set.seed(222)
+
+set.seed(1222)
 
 
-ind<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
-train<-draftkingsdata[ind==1,]
-test<- draftkingsdata[ind==2,]
+ind8<-sample(2,nrow(draftkingsdata),replace = TRUE, prob = c(0.7,0.3))
+train8<-draftkingsdata[ind8==1,]
+test8<- draftkingsdata[ind8==2,]
 
-train<-train[, -c(11,25)]
+train8<-train8[, -c(11,25)]
 
 
-test<-test[,-c(11,25)]
+test8<-test8[,-c(11,25)]
 
-Naive_Bayes_Model<-naiveBayes(GPPViable ~., data=train)
-NB_Predictions=predict(Naive_Bayes_Model,newdata=test)
+Naive_Bayes_Model<-naiveBayes(GPPViable ~., data=train8)
+NB_Predictions=predict(Naive_Bayes_Model,newdata=test8)
 
-cmatrix<-table(NB_Predictions,test$GPPViable)
+cmatrix<-table(NB_Predictions,test8$GPPViable)
 
 TPP= cmatrix[2,2]/(cmatrix[1,2]+cmatrix[2,2])
 
 Recall1<- cmatrix[2,2]/(cmatrix[2,1]+cmatrix[2,2])
+
+cmatrix
+TPP
+Recall1
 ```
