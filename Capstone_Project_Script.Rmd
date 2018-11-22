@@ -3,6 +3,7 @@ title: "Capstone_Project_Scipt"
 author: "Justin Carver"
 date: "November 8, 2018"
 output:
+  word_document: default
   pdf_document: default
   html_document: default
 ---
